@@ -74,9 +74,27 @@ Secondary learning objective included:
 | Random Forest       | 12970               | 547                  | 15                   |
 | XGBoost             | 13250               | 375                  | 19                   |
 
-* CONCLUSIONS: WORK IN PROGRESS
+* The best performing model on the Test Dataset was the Random Forest, tuned via Bayesian Optimization. 
+
+* The XGBoost model was close, with less False Positives, but more False Negatives. As noted in the XGBoost tuning notebook, the model performed better than the Random Forest on the train/validation sets but did not generalize as well. 
+
+    * A secondary tuning round focusing on XGBoost's regularization parameters could help alleviate this overfitting.
+
+* Another thing to note is that the Logistic Regression model is not far off from the more advanced models. The Logistic Regression model would have significantly less computational overhead costs and is easy to refit and tune when more data is available.
+
+    * If 22 False Negatives (e.g. Type 2 Faults) are not acceptable, a potential solution could be a Logistic Regression model in conjunction with regularly scheduled maintenance intervals, similar to an aircraft's A/B/C checks. This approach would be similar to manually raising the False Positive rate in order to decrease the probability of a False Negative (the higher cost of the two)
 
 
 ### Areas for Improvement & Further Experimentation
 
-* CONCLUSIONS: WORK IN PROGRESS
+* The Random Forest and XGBoost models used 150 and 100 estimators each, respectively. This was due to training being done locally. If more computational resources were available, additional estimators could be added. 
+
+* For the XGBoost model, default parameters for the Mixed Variable Genetic Algorithm were used. Further experimentation with the type of crossover and mutation operators used, as well as other parameters such as population size and number of generations, could be done to improve convergence and prevent overfitting.
+
+    * Furthermore, no early stopping criteria was used, which resulted in the XGBoost model tuning to be run for ~9 hrs locally. Experimentation with early stopping criteria could allow a wider hyperparameter search space with the same computational budget.
+
+* Domain knowledge (and non-anonymized data) could allow for a deeper level of feature engineering. This project primarily experimented with different models (e.g. nonlinearity introduced during model building). However, there are some cases where tuning the features yields better results. 
+
+    * For example, combining nonlinear features with a linear model could not only increase overall predictive power but also lower the computational cost (python library: autofeat). 
+
+    * Nonlinear features = a nonlinear transformation or combination of two existing features, e.g. sin(x1 * x2)
